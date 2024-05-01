@@ -1,0 +1,133 @@
+import React, { useState } from 'react';
+import { View, Image, StyleSheet, TouchableOpacity, Alert, Dimensions, Modal, Text, Button, ScrollView } from 'react-native';
+
+const images = [
+  { id: 1, source: require('./assets/mountain.jpg'), description: 'Mountain' },
+  { id: 2, source: require('./assets/artwork.jpg'), description: 'Artwork' },
+  { id: 3, source: require('./assets/flower.jpeg'), description: 'Flower' },
+  { id: 4, source: require('./assets/nightstreet.jpg'), description: 'Street' },
+  { id: 5, source: require('./assets/kitten.jpeg'), description: 'Kitten' },
+  { id: 6, source: require('./assets/fruits.jpg'), description: 'Fruits' },
+  { id: 7, source: require('./assets/waterfall.jpeg'), description: 'Waterfall' },
+  { id: 8, source: require('./assets/beach.jpg'), description: 'Beach' },
+  { id: 9, source: require('./assets/castle.jpg'), description: 'Castle' },
+  { id: 10, source: require('./assets/butterfly.jpeg'), description: 'Butterfly' },
+  { id: 11, source: require('./assets/sunrise.jpg'), description: 'Sunrise' },
+  { id: 12, source: require('./assets/vintagecar.jpg'), description: 'Vintage' },
+  { id: 13, source: require('./assets/fantasy.png'), description: 'Fantasy' },
+  { id: 14, source: require('./assets/cabin.jpg'), description: 'Cabin' },
+  { id: 15, source: require('./assets/future.jpeg'), description: 'Futuristic' },
+  { id: 16, source: require('./assets/corals.jpg'), description: 'Corals' },
+];
+
+const numColumns = 2;
+const screenWidth = Dimensions.get('window').width;
+
+const Gallery = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImagePress = (image) => {
+    setSelectedImage(image);
+  };
+
+  const handleBuyButtonPress = (image) => {
+    Alert.alert(`Buy Image ${image.id}`, `You selected to buy ${image.description}`);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading}>Image Store</Text>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <View style={styles.imageGrid}>
+          {images.map((image) => (
+            <TouchableOpacity
+              key={image.id}
+              style={styles.imageContainer}
+              onPress={() => handleImagePress(image)}
+            >
+              <Image source={image.source} style={styles.image} />
+              <Text style={styles.description}>{image.description}</Text>
+              <Button title="Select" onPress={() => handleBuyButtonPress(image)} />
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+      <Modal visible={selectedImage !== null} transparent={true}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Image source={selectedImage?.source} style={styles.selectedImage} />
+            <Text style={styles.description}>{selectedImage?.description}</Text>
+            <Button title="Close" onPress={closeModal} />
+          </View>
+        </View>
+      </Modal>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  scrollViewContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageContainer: {
+    width: screenWidth / numColumns,
+    height: screenWidth / numColumns,
+    padding: 5,
+    alignItems: 'center',
+  },
+  image: {
+    flex: 1,
+    width: '100%',
+    height: '80%',
+    resizeMode: 'cover',
+    borderRadius: 5,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  selectedImage: {
+    width: screenWidth - 40,
+    height: screenWidth - 40,
+    resizeMode: 'contain',
+    borderRadius: 10,
+  },
+  description: {
+    marginTop: 10,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+});
+
+export default Gallery;
