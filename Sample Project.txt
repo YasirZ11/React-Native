@@ -1,0 +1,87 @@
+import { StatusBar } from 'expo-status-bar';
+import { useState} from 'react';
+import { StyleSheet,Text,View,Alert,Button,TextInput,ScrollView } from 'react-native';
+
+export default function App() {
+  const[activityText,setActivityText]=useState("")
+  const[activities,setActivity]=useState([])
+
+  function activityInputHandler(text){
+    setActivityText(text)
+  }
+
+  function AddActivityHandler(){
+    setActivity((currentActivity)=>[...currentActivity,activityText])
+  }
+
+  function clearActivityHandler(){
+   setActivity([])
+  }
+
+
+  return (
+    <View style={styles.container}>
+     <View style={styles.inputContainer}> 
+        <TextInput style={styles.textInput}
+        placeholder='Type the activity'
+        onChangeText={activityInputHandler}
+      />
+      <Button title='Add Activity'
+      onPress={AddActivityHandler}/>
+     </View>
+
+     <View>
+      <Text>List of activity</Text>
+     </View>
+     <ScrollView>
+        <View Style={styles.activityContainer}>
+          {activities.map((activity,i)=><Text style={styles.ActivityItems} key={i}>{activity}</Text>)}
+        </View>
+      </ScrollView>
+      <Button title='Clear All'
+      onPress={clearActivityHandler}/>
+     </View>
+  );
+}
+
+const styles =StyleSheet.create({
+  container: {
+    flex:1,
+    padding:50,
+    paddingHorizontal:16,
+    backroundColor:'#fff',
+    alignItems:'center',
+    justifyContent:'center',
+  },
+
+  inputContainer:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    borderBottomWidth:1,
+    paddingBottom:25,
+    alignItems:'center'
+  },
+
+  textInput:{
+    borderWidth:1,
+    borderColor:'gray',
+    width:'70%',
+    marginRight:8,
+    padding:8
+  },
+
+  activityContainer:{
+    flex:4
+  },
+
+  ActivityItems:{
+    margin:8,
+    padding:8,
+    borderRadius:6,
+    backgroundColor:'lightgreen'
+  }
+
+
+
+});
+
